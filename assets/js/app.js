@@ -29,6 +29,20 @@ $(document).ready(function () {
         $("firstTR").append($("<th>").html("Minutes Away"));
 
         $("#train-table").append($("<tbody>"));
+        //this is where we will add all the train info
+        $("#firstColumn").append($("<div>").addClass("panel panel-primary").attr("id","trainInfoPanel"));
+        $("#trainInfoPanel").append($("<div>").addClass("panel-heading").attr("id","panelHeading"));
+        $("#panelHeading").append($("<h3>").addClass("panel-title").attr("id","trainPanelTitle").html("<strong>Add Train</strong>"));
+        $("#trainInfoPanel").append($("<div>").addClass("panel-body").attr("id","trainPanelBody"));
+        
+        $("#trainPanelBody").append($("<form>").attr("id","trainForm"));
+        $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup1"));
+        $("#formGroup1").append($("<label>").attr("for","destination-input").html("Train Name"));
+        $("#formGroup1").append($("<input>").addClass("form-control").attr({id: "train-name-input", type: "text"}).attr("required", true));
+
+        $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup2"));
+        $("#formGroup2").append($("<label>").attr("for","destination-input").html("Destination"));
+        $("#formGroup2").append($("<input>").addClass("form-control").attr({id: "destination-input", type: "text"}).attr("required", true));
 
     }
 
