@@ -7,7 +7,7 @@ $(document).ready(function () {
     }
     function addJumboTron(){
         $(".container").append($("<div>").addClass("jumbotron").attr("id", "myJumbotron"));
-        $("#myJumbotron").append($("<h1>").addClass("text-center").html("Ajay's Trains"))
+        $("#myJumbotron").append($("<h1>").addClass("text-center").html("Mobile Ave Train Station"))
         $("#myJumbotron").append($("<h3>").addClass("text-center").html("Train Schecule"))
     }
 
@@ -36,9 +36,28 @@ $(document).ready(function () {
         $("#trainInfoPanel").append($("<div>").addClass("panel-body").attr("id","trainPanelBody"));
         
         $("#trainPanelBody").append($("<form>").attr("id","trainForm"));
+
+        
+        // $("#trainForm").append($("<div>").addClass("input-field col s6").attr("id","formGroup1"));
+        // $("#formGroup1").append($("<input>").addClass("validate").attr({id : "train-name-input", type: "text"}));
+        // $("#formGroup1").append($("<label>").attr({for: "train-name-input"}).text("Train Name:"));
+
+        // $("#trainForm").append($("<div>").addClass("input-field col s6").attr("id","formGroup2"));
+        // $("#formGroup2").append($("<input>").addClass("validate").attr({id : "destination-input", type: "text"}))
+        // $("#formGroup2").append($("<label>").attr({for: "destination-input"}).text("Destination:"))
+
+        // $("#trainForm").append($("<div>").addClass("input-field col s6").attr("id","formGroup3"));
+        // $("#formGroup3").append($("<input>").addClass("form-group").attr({id: first}))
+
+
+
         $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup1"));
         $("#formGroup1").append($("<label>").attr("for","destination-input").html("Train Name"));
         $("#formGroup1").append($("<input>").addClass("form-control").attr({id: "train-name-input", type: "text"}).attr("required", true));
+
+        // <div class="input-field col s6">
+        // <input placeholder="Placeholder" id="first_name" type="text" class="validate">
+        //   <label for="first_name">First Name</label>
 
         $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup2"));
         $("#formGroup2").append($("<label>").attr("for","destination-input").html("Destination"));
