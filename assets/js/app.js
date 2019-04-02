@@ -51,75 +51,80 @@ $(document).ready(function () {
 
 
 
-        $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup1"));
-        $("#formGroup1").append($("<label>").attr("for","train-name-input").html("Train Name"));
-        $("#formGroup1").append($("<input>").addClass("form-control").attr({id: "train-name-input", type: "text"}).attr("required", true));
+        // $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup1"));
+        // $("#formGroup1").append($("<label>").attr("for","train-name-input").html("Train Name"));
+        // $("#formGroup1").append($("<input>").addClass("form-control").attr({id: "train-name-input", type: "text"}).attr("required", true));
 
-        $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup1"));
-        $("#formGroup1").append($("<label>").attr("for","destination-input").html("Destination"));
-        $("#formGroup1").append($("<input>").addClass("form-control").attr({id: "train-name-input", type: "text"}).attr("required", true));
+        // $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup2"));
+        // $("#formGroup2").append($("<label>").attr("for","destination-input").html("Destination"));
+        // $("#formGroup2").append($("<input>").addClass("form-control").attr({id: "train-name-input", type: "text"}).attr("required", true));
 
-        $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup2"));
-        $("#formGroup2").append($("<label>").attr("for","firsttime-input").html("First Train Time (military time HH:MM)"));
-        $("#formGroup2").append($("<input>").addClass("form-group").attr({id: "firstHour1-input", type: "number", min: "0", max: "1", maxlength: "1", required: true}));
-        $("#formGroup2").append($("<input>").addClass("form-group").attr({id: "firstHour2-input", type: "number", min: "0", max: "9", maxlength: "1", required: true}));
-        $("#formGroup2").append($("<label>").html(":"));
+        // $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup3"));
+        // $("#formGroup3").append($("<label>").attr("for","firsttime-input").html("First Train Time (military time HH:MM)"));
+        // $("#formGroup3").append($("<input>").addClass("form-group").attr({id: "firstHour1-input", type: "number", min: "0", max: "1", maxlength: "1", required: true}));
+        // $("#formGroup3").append($("<input>").addClass("form-group").attr({id: "firstHour2-input", type: "number", min: "0", max: "9", maxlength: "1", required: true}));
+        // $("#formGroup3").append($("<label>").html(":"));
 
-        $("#formGroup2").append($("<input>").addClass("form-group").attr({id: "firstMin1-input", type: "number", min: "0", max: "5", maxlength: "1", required: true}));
-        $("#formGroup2").append($("<input>").addClass("form-group").attr({id: "firstMin2-input", type: "number", min: "0", max: "9", maxlength: "1", required: true}));
+        // $("#formGroup3").append($("<input>").addClass("form-group").attr({id: "firstMin1-input", type: "number", min: "0", max: "5", maxlength: "1", required: true}));
+        // $("#formGroup3").append($("<input>").addClass("form-group").attr({id: "firstMin2-input", type: "number", min: "0", max: "9", maxlength: "1", required: true}));
         
-        $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup3"));
-        $("#formGroup3").append($("<label>").attr("for", "frequency-input").html("Frequency (min)"));
-        $("#formGroup3").append($("<input>").addClass("form-control").attr({id: "frequency-input", type: "number", min: "1", maxlength: "10", required: true}));
+        // $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup4"));
+        // $("#formGroup4").append($("<label>").attr("for", "frequency-input").html("Frequency (min)"));
+        // $("#formGroup4").append($("<input>").addClass("form-control").attr({id: "frequency-input", type: "number", min: "1", maxlength: "10", required: true}));
 
-        $("#trainForm").append($("<button>").addClass("btn btn-primary").attr({id: "add-train-btn", type: "submit"}).html("submit"));
+        $("#trainForm").append($("<button>").addClass("btn btn-primary").attr({id: "add-train-btn", type: "submit"}).html("Add Train Times"));
 
     }
 
-    $(document).on("click", "add-train-btn", function () {
+    $(document).on("click", "#add-train-btn", function () {
+        event.preventDefault();
         popUpModal();
+        console.log("inside the click");
         $("#trainModal").modal("show");
         
     });
 
     function popUpModal(){
-        $(".container").append($("<div>").addClass("modal fade").attr({id: "trainModal", role: "dialog"}));
+        $("#trainModal").empty();
+        $(".container").append($("<div>").addClass("modal fade").attr({id: "trainModal", role: "dialog", style: "width: 1250px"}));
         $("#trainModal").append($("<div>").addClass("modal-dialog").attr("id","modalDialog"));
         $("#modalDialog").append($("<div>").addClass("modal-content").attr("id","modalContent"));
         $("#modalContent").append($("<div>").addClass("modal-header").attr({id: "modalHeader", style: "padding:35px 50px"}));
-        $("#modalHeader").append($("<button>").addClass("close").attr("type", "button").attr("data-dismiss", "modal"));
         $("#modalHeader").append($("<h4>").addClass("glyphicon glyphicon-lock").html("Train Information"));
+        $("#modalHeader").append($("<button>").addClass("close").attr("type", "button").attr("data-dismiss", "modal"));
 
         $("#modalContent").append($("<div>").addClass("modal-body").attr({id: "modalBody", style: "padding:40px 50px"}));
-        $("#modalBody").append($("<form>").attr("id","trainForm").attr("role", "form"));
+        $("#modalBody").append($("<form>").attr("id","trainFormModal").attr("role", "form"));
         
-        $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup1"));
+        $("#trainFormModal").append($("<div>").addClass("form-group").attr("id","formGroup1"));
         $("#formGroup1").append($("<label>").attr("for","train-name-input").html("Train Name"));
         $("#formGroup1").append($("<input>").addClass("form-control").attr({id: "train-name-input", type: "text"}).attr("required", true));
 
-        $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup1"));
-        $("#formGroup1").append($("<label>").attr("for","destination-input").html("Destination"));
-        $("#formGroup1").append($("<input>").addClass("form-control").attr({id: "train-name-input", type: "text"}).attr("required", true));
+        $("#trainFormModal").append($("<div>").addClass("form-group").attr("id","formGroup2"));
+        $("#formGroup2").append($("<label>").attr("for","destination-input").html("Destination"));
+        $("#formGroup2").append($("<input>").addClass("form-control").attr({id: "train-name-input", type: "text"}).attr("required", true));
 
-        $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup2"));
-        $("#formGroup2").append($("<label>").attr("for","firsttime-input").html("First Train Time (military time HH:MM)"));
-        $("#formGroup2").append($("<input>").addClass("form-group").attr({id: "firstHour1-input", type: "number", min: "0", max: "1", maxlength: "1", required: true}));
-        $("#formGroup2").append($("<input>").addClass("form-group").attr({id: "firstHour2-input", type: "number", min: "0", max: "9", maxlength: "1", required: true}));
-        $("#formGroup2").append($("<label>").html(":"));
+        $("#trainFormModal").append($("<div>").addClass("form-group").attr("id","formGroup3"));
+        $("#formGroup3").append($("<label>").attr("for","firsttime-input").html("First Train Time (Military Format HH:MM)"));
+        $("#trainFormModal").append($("<div>").addClass("form-group").attr("id","formGroup4"));
+        $("#formGroup4").append($("<input>").addClass("form-group").attr({id: "firstHour1-input", type: "number", min: "0", max: "1", maxlength: "1", required: true}));
+        $("#formGroup4").append($("<input>").addClass("form-group").attr({id: "firstHour2-input", type: "number", min: "0", max: "9", maxlength: "1", required: true}));
+        $("#formGroup4").append($("<label>").html(":"));
 
-        $("#formGroup2").append($("<input>").addClass("form-group").attr({id: "firstMin1-input", type: "number", min: "0", max: "5", maxlength: "1", required: true}));
-        $("#formGroup2").append($("<input>").addClass("form-group").attr({id: "firstMin2-input", type: "number", min: "0", max: "9", maxlength: "1", required: true}));
+        $("#formGroup4").append($("<input>").addClass("form-group").attr({id: "firstMin1-input", type: "number", min: "0", max: "5", maxlength: "1", required: true}));
+        $("#formGroup4").append($("<input>").addClass("form-group").attr({id: "firstMin2-input", type: "number", min: "0", max: "9", maxlength: "1", required: true}));
         
-        $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup3"));
-        $("#formGroup3").append($("<label>").attr("for", "frequency-input").html("Frequency (min)"));
-        $("#formGroup3").append($("<input>").addClass("form-control").attr({id: "frequency-input", type: "number", min: "1", maxlength: "10", required: true}));
+        $("#trainFormModal").append($("<div>").addClass("form-group").attr("id","formGroup5"));
+        $("#formGroup5").append($("<label>").attr("for", "frequency-input").html("Frequency (min)"));
+        $("#formGroup5").append($("<input>").addClass("form-control").attr({id: "frequency-input", type: "number", min: "1", maxlength: "10", required: true}));
 
-        $("#trainForm").append($("<button>").addClass("btn btn-primary").attr({id: "add-train-btn-modal", type: "submit"}).html("submit"));
+        $("#trainFormModal").append($("<button>").addClass("btn btn-primary").attr({id: "add-train-btn-modal", type: "submit"}).html("submit"));
 
         $("#modalContent").append($("<div>").addClass("modal-footer").attr("id","modalFooter"));
-        $("#modalFooter").append($("<button>").addClass("btn btn-danger btn-default pull-left").attr("type", "button").attr("data-dismiss", "modal"));
+        $("#modalFooter").append($("<button>").addClass("btn btn-danger btn-default pull-right").attr("type", "button").attr("data-dismiss", "modal").attr("id", "modalCancel"));
+        $("#modalCancel").append($("<span>").addClass("glyphicon glyphicon-remove").html("Cancel"));
 
-        $("#trainModal").modal("show");
+        // $("#trainModal").modal("show");
     }
 
 });
