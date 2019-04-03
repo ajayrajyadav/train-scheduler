@@ -3,7 +3,7 @@
     color: white;
 }
 
-.modal-header, h4, .close {
+#modalHeader, h4, .close {
     background-color: #5cb85c;
     color:white !important;
     text-align: center;
@@ -11,4 +11,11 @@
   }
   .modal-footer {
     background-color: #f9f9f9;
+  }
+
+  #errModalheader{
+      background-color: red;
+      color:white !important;
+    text-align: center;
+    font-size: 30px;
   }
