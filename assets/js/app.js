@@ -138,13 +138,6 @@ $(document).ready(function () {
         $("#trainFormModal").append($("<div>").addClass("form-group").attr("id","formGroup4"));
         $("#formGroup4").append($("<input>").attr({id: "trainTime", type: "time", required: true}));
         
-        // $("#formGroup4").append($("<input>").addClass("form-group").attr({id: "firstHour1-input", type: "number", min: "0", max: "1", maxlength: "1", required: true}));
-        // $("#formGroup4").append($("<input>").addClass("form-group").attr({id: "firstHour2-input", type: "number", min: "0", max: "9", maxlength: "1", required: true}));
-        // $("#formGroup4").append($("<label>").html(":"));
-
-        // $("#formGroup4").append($("<input>").addClass("form-group").attr({id: "firstMin1-input", type: "number", min: "0", max: "5", maxlength: "1", required: true}));
-        // $("#formGroup4").append($("<input>").addClass("form-group").attr({id: "firstMin2-input", type: "number", min: "0", max: "9", maxlength: "1", required: true}));
-        
         $("#trainFormModal").append($("<div>").addClass("form-group").attr("id","formGroup5"));
         $("#formGroup5").append($("<label>").attr("for", "frequency-input").html("Frequency (min)"));
         $("#formGroup5").append($("<input>").addClass("form-control").attr({id: "frequency-input", type: "number", min: "1", maxlength: "10", required: true}));
@@ -165,7 +158,7 @@ $(document).ready(function () {
         $("#errDialog").append($("<div>").addClass("modal-content").attr("id", "errModalContent"));
         $("#errModalContent").append($("<div>").addClass("modal-header").attr("id","errModalheader"));
         $("#errModalheader").append($("<h5>").addClass("modal-title").attr("id", "errModalTitle").html("Error!"));
-        $("#errModalContent").append($("<div>").addClass("modal-body").attr("id", "errModalBody").html("Message will go here"))
+        $("#errModalContent").append($("<div>").addClass("modal-body").attr("id", "errModalBody").html(message))
         $("#errModalContent").append($("<div>").addClass("modal-footer").attr("id", "errModalFooter"));
         $("#errModalFooter").append($("<button>").addClass("btn btn-secondary").attr({id: "closeButton", type: "button"}).attr("data-dismiss", "modal").html("close"))
         $("#errorModal").modal("show");
