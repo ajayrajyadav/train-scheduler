@@ -1,15 +1,30 @@
 $(document).ready(function () {
-    var trainObject ={
-        trainName: "",
-        trainDestination: "",
-        firstTrain: "",
-        trainFrequency: "",
-        minutesUntilTrainArrives: 0,
-        TimeForNextTrain: 0
-    }
+
+    //initialize firebase
+    var config = {
+        apiKey: "AIzaSyCHO7cXyt76PviMiJ3oYmzULwSm3DRedQQ",
+        authDomain: "train-schedule-b54d6.firebaseapp.com",
+        databaseURL: "https://train-schedule-b54d6.firebaseio.com",
+        projectId: "train-schedule-b54d6",
+        storageBucket: "train-schedule-b54d6.appspot.com",
+        messagingSenderId: "596294037619"
+    };
+    firebase.initializeApp(config);
+    var database = firebase.database();
     var currentTime = moment();
 
+    database.ref().on("child_added", function(childSnap){
+        // buildhtml();
+        var tName = childSnap.val().trainName;
+        var tDestination = childSnap.val().trainDestination;
+        var fstTrain = childSnap.val().firstTrain;
+        var tFrequency = childSnap.val().trainFrequency;
+        var tMin = childSnap.val().minutesUntilTrainArrives;
+        var tNext = childSnap.val().TimeForNextTrain;
 
+        $("#table-tbody").append("<tr><td>"+tName+"</td><td>"+tDestination+"</td><td>"+tFrequency+"</td><td>"+tNext+"</td><td>"+tMin+"</td></tr>");
+
+    })
 
     buildhtml();
 
@@ -25,7 +40,7 @@ $(document).ready(function () {
         event.preventDefault();
         // console.log("inside the click");
         getTrainInfo();
-        // $("#trainModal").modal("show");
+        $("#trainModal").modal("hide");
         
     });
 
@@ -53,8 +68,8 @@ $(document).ready(function () {
             minutesUntilTrainArrives: minUntilTrain,
             TimeForNextTrain: nextTrain
         }
-
-        $("#trainModal").modal("hide");
+        console.log(newTrain);
+        database.ref().push(newTrain);
     }
     
 
@@ -76,17 +91,17 @@ $(document).ready(function () {
         $("#firstCard").append($("<div>").addClass("panel-heading").attr("id","table-heading"));
         $("#table-heading").append($("<h3>").addClass("panel-title").attr("id","panelTitle").html("<strong>Current Train Schedule</strong>"));
 
-        $("firstCard").append($("<div>").addClass("panel-body").attr("id","panelBody"));
-        $("panelBody").append($("<table>").addClass("table table-hober").attr("id","train-table"));
-        $("train-table").append($("<thead>").attr("id", "firstThead"));
+        $("#firstCard").append($("<div>").addClass("panel-body").attr("id","panelBody"));
+        $("#panelBody").append($("<table>").addClass("table table-hober").attr("id","train-table"));
+        $("#train-table").append($("<thead>").attr("id", "firstThead"));
         $("#firstThead").append($("<tr>").attr("id","firstTR"));
-        $("firstTR").append($("<th>").html("Train Name"));
-        $("firstTR").append($("<th>").html("Destination"));
-        $("firstTR").append($("<th>").html("Frequency (Min)"));
-        $("firstTR").append($("<th>").html("Next Arrival"));
-        $("firstTR").append($("<th>").html("Minutes Away"));
+        $("#firstTR").append($("<th>").html("Train Name"));
+        $("#firstTR").append($("<th>").html("Destination"));
+        $("#firstTR").append($("<th>").html("Frequency (Min)"));
+        $("#firstTR").append($("<th>").html("Next Arrival"));
+        $("#firstTR").append($("<th>").html("Minutes Away"));
 
-        $("#train-table").append($("<tbody>"));
+        $("#train-table").append($("<tbody>").attr("id", "table-tbody"));
         //this is where we will add all the train info
         $("#firstColumn").append($("<div>").addClass("panel panel-primary").attr("id","trainInfoPanel"));
         $("#trainInfoPanel").append($("<div>").addClass("panel-heading").attr("id","panelHeading"));
