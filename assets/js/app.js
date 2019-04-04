@@ -9,10 +9,14 @@ $(document).ready(function () {
         storageBucket: "train-schedule-b54d6.appspot.com",
         messagingSenderId: "596294037619"
     };
+    //initialize all of my global variables
     firebase.initializeApp(config);
     var database = firebase.database();
     var currentTime = moment();
+    var minUntilTrain = "";
+    var nextTrain = "";
 
+    //get the data from firebase and populate into the table
     database.ref().on("child_added", function(childSnap){
         // buildhtml();
         var tName = childSnap.val().trainName;
@@ -26,24 +30,26 @@ $(document).ready(function () {
 
     })
 
+    //call the function to build the html
     buildhtml();
 
+    //button click to load the modal for train information
     $(document).on("click", "#add-train-btn", function () {
         event.preventDefault();
         popUpModal();
-        console.log("inside the click");
         $("#trainModal").modal("show");
         
     });
 
+    //button click in the modal for submitting information about the train
     $(document).on("click", "#add-train-btn-modal", function () {
         event.preventDefault();
-        // console.log("inside the click");
         getTrainInfo();
         $("#trainModal").modal("hide");
         
     });
 
+    //get the user entered data
     function getTrainInfo(){
         let newTrainInput = $("#train-name-input").val().trim();
         let theDestinationInput = $("#train-dest-input").val().trim();
@@ -53,13 +59,7 @@ $(document).ready(function () {
         if(theDestinationInput === ""){ popUpModal("Destination input is not valid"); }
         if(firstTrainInput === ""){ popUpModal("Time is not valid"); }
         if(frequencyInput === ""){ popUpModal("Time is not valid"); }
-
-        var firstTrainConverted = moment(firstTrainInput, "hh:mm").subtract("1, years");
-        var difference = currentTime.diff(moment(firstTrainConverted), "minutes");
-        var remainder = difference % frequencyInput;
-        var minUntilTrain = frequencyInput - remainder;
-        var nextTrain = moment().add(minUntilTrain, "minutes").format("HH:mm");
-        console.log(nextTrain);
+        doTheMath(firstTrainInput, frequencyInput);
         var newTrain = {
             trainName: newTrainInput,
             trainDestination: theDestinationInput,
@@ -71,19 +71,32 @@ $(document).ready(function () {
         console.log(newTrain);
         database.ref().push(newTrain);
     }
-    
 
+    //helper function to calculate the math of times
+    function doTheMath(firstTrainInput, frequencyInput){
+        var firstTrainConverted = moment(firstTrainInput, "hh:mm").subtract("1, years");
+        var difference = currentTime.diff(moment(firstTrainConverted), "minutes");
+        var remainder = difference % frequencyInput;
+        minUntilTrain = frequencyInput - remainder;
+        nextTrain = moment().add(minUntilTrain, "minutes").format("HH:mm");
+        console.log(nextTrain);
+    }
+
+    //Starting to build html by adding a container to the body
     function buildhtml(){
         $("body").append($("<div>").addClass("container"));
         addJumboTron();
         addTrainTable();
     }
+
+    //creating the jumbotron
     function addJumboTron(){
         $(".container").append($("<div>").addClass("jumbotron").attr("id", "myJumbotron"));
         $("#myJumbotron").append($("<h1>").addClass("text-center").html("Mobile Ave Train Station"))
         $("#myJumbotron").append($("<h3>").addClass("text-center").html("Train Schecule"))
     }
 
+    //creating the table
     function addTrainTable(){
         $(".container").append($("<div>").addClass("row").attr("id", "firstRow"));
         $("#firstRow").append($("<div>").addClass("col-lg-12").attr("id", "firstColumn"));
@@ -103,19 +116,17 @@ $(document).ready(function () {
 
         $("#train-table").append($("<tbody>").attr("id", "table-tbody"));
         //this is where we will add all the train info
-        $("#firstColumn").append($("<div>").addClass("panel panel-primary").attr("id","trainInfoPanel"));
+        $("#firstColumn").append($("<div>").addClass("card").attr("id","trainInfoPanel"));
         $("#trainInfoPanel").append($("<div>").addClass("panel-heading").attr("id","panelHeading"));
-        $("#panelHeading").append($("<h3>").addClass("panel-title").attr("id","trainPanelTitle").html("<strong>Add Train</strong>"));
+        // $("#panelHeading").append($("<h3>").addClass("panel-title").attr("id","trainPanelTitle").html("<strong>Add Train</strong>"));
         $("#trainInfoPanel").append($("<div>").addClass("panel-body").attr("id","trainPanelBody"));
         
         $("#trainPanelBody").append($("<form>").attr("id","trainForm"));
-        $("#trainForm").append($("<button>").addClass("btn btn-primary").attr({id: "add-train-btn", type: "submit"}).html("Add Train Times"));
+        $("#trainForm").append($("<button>").addClass("btn btn-primary btn-block").attr({id: "add-train-btn", type: "submit"}).html("Add Train Times"));
 
     }
 
-    
-
-
+    //creating the modal to pop up for train information
     function popUpModal(){
         $("#trainModal").empty();
         $(".container").append($("<div>").addClass("modal fade").attr({id: "trainModal", role: "dialog", style: "width: 1250px"}));
@@ -162,6 +173,7 @@ $(document).ready(function () {
         // $("#trainModal").modal("show");
     }
 
+    //creating the error modal to pop up when information entered is invalid
     function popupErrorModal(message){
         $("#errorModal").empty();
         $(".container").append($("<div>").addClass("modal fade").attr({id: "errorModal", role: "dialog",}));

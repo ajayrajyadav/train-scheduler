@@ -19,3 +19,16 @@
     text-align: center;
     font-size: 30px;
   }
+
+  /* table, th, td {
+    border: 1px solid #327AB7;
+  } */
+
+  #panelTitle, #trainPanelTitle{
+    background-color: #327AB7;
+    color: #ddd;
+  }
+
+  #firstCard, #trainInfoPanel{
+    border-color: #327AB7;
+}
