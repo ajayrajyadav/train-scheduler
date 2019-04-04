@@ -7,19 +7,57 @@ $(document).ready(function () {
         minutesUntilTrainArrives: 0,
         TimeForNextTrain: 0
     }
+    var currentTime = moment();
+
+
+
+    buildhtml();
+
+    $(document).on("click", "#add-train-btn", function () {
+        event.preventDefault();
+        popUpModal();
+        console.log("inside the click");
+        $("#trainModal").modal("show");
+        
+    });
+
+    $(document).on("click", "#add-train-btn-modal", function () {
+        event.preventDefault();
+        // console.log("inside the click");
+        getTrainInfo();
+        // $("#trainModal").modal("show");
+        
+    });
 
     function getTrainInfo(){
         let newTrainInput = $("#train-name-input").val().trim();
         let theDestinationInput = $("#train-dest-input").val().trim();
         let firstTrainInput = $("#trainTime").val().trim();
         let frequencyInput = $("#frequency-input").val().trim();
-        if(newTrainInput =="a"){
-            popupErrorModal("you messded up");
+        if(newTrainInput ===  ""){ popupErrorModal("Train input is not valid"); }
+        if(theDestinationInput === ""){ popUpModal("Destination input is not valid"); }
+        if(firstTrainInput === ""){ popUpModal("Time is not valid"); }
+        if(frequencyInput === ""){ popUpModal("Time is not valid"); }
+
+        var firstTrainConverted = moment(firstTrainInput, "hh:mm").subtract("1, years");
+        var difference = currentTime.diff(moment(firstTrainConverted), "minutes");
+        var remainder = difference % frequencyInput;
+        var minUntilTrain = frequencyInput - remainder;
+        var nextTrain = moment().add(minUntilTrain, "minutes").format("HH:mm");
+        console.log(nextTrain);
+        var newTrain = {
+            trainName: newTrainInput,
+            trainDestination: theDestinationInput,
+            firstTrain: firstTrainInput,
+            trainFrequency: frequencyInput,
+            minutesUntilTrainArrives: minUntilTrain,
+            TimeForNextTrain: nextTrain
         }
 
+        $("#trainModal").modal("hide");
     }
+    
 
-    buildhtml();
     function buildhtml(){
         $("body").append($("<div>").addClass("container"));
         addJumboTron();
@@ -56,61 +94,11 @@ $(document).ready(function () {
         $("#trainInfoPanel").append($("<div>").addClass("panel-body").attr("id","trainPanelBody"));
         
         $("#trainPanelBody").append($("<form>").attr("id","trainForm"));
-
-        
-        // $("#trainForm").append($("<div>").addClass("input-field col s6").attr("id","formGroup1"));
-        // $("#formGroup1").append($("<input>").addClass("validate").attr({id : "train-name-input", type: "text"}));
-        // $("#formGroup1").append($("<label>").attr({for: "train-name-input"}).text("Train Name:"));
-
-        // $("#trainForm").append($("<div>").addClass("input-field col s6").attr("id","formGroup2"));
-        // $("#formGroup2").append($("<input>").addClass("validate").attr({id : "destination-input", type: "text"}))
-        // $("#formGroup2").append($("<label>").attr({for: "destination-input"}).text("Destination:"))
-
-        // $("#trainForm").append($("<div>").addClass("input-field col s6").attr("id","formGroup3"));
-        // $("#formGroup3").append($("<input>").addClass("form-group").attr({id: first}))
-
-
-
-        // $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup1"));
-        // $("#formGroup1").append($("<label>").attr("for","train-name-input").html("Train Name"));
-        // $("#formGroup1").append($("<input>").addClass("form-control").attr({id: "train-name-input", type: "text"}).attr("required", true));
-
-        // $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup2"));
-        // $("#formGroup2").append($("<label>").attr("for","destination-input").html("Destination"));
-        // $("#formGroup2").append($("<input>").addClass("form-control").attr({id: "train-name-input", type: "text"}).attr("required", true));
-
-        // $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup3"));
-        // $("#formGroup3").append($("<label>").attr("for","firsttime-input").html("First Train Time (military time HH:MM)"));
-        // $("#formGroup3").append($("<input>").addClass("form-group").attr({id: "firstHour1-input", type: "number", min: "0", max: "1", maxlength: "1", required: true}));
-        // $("#formGroup3").append($("<input>").addClass("form-group").attr({id: "firstHour2-input", type: "number", min: "0", max: "9", maxlength: "1", required: true}));
-        // $("#formGroup3").append($("<label>").html(":"));
-
-        // $("#formGroup3").append($("<input>").addClass("form-group").attr({id: "firstMin1-input", type: "number", min: "0", max: "5", maxlength: "1", required: true}));
-        // $("#formGroup3").append($("<input>").addClass("form-group").attr({id: "firstMin2-input", type: "number", min: "0", max: "9", maxlength: "1", required: true}));
-        
-        // $("#trainForm").append($("<div>").addClass("form-group").attr("id","formGroup4"));
-        // $("#formGroup4").append($("<label>").attr("for", "frequency-input").html("Frequency (min)"));
-        // $("#formGroup4").append($("<input>").addClass("form-control").attr({id: "frequency-input", type: "number", min: "1", maxlength: "10", required: true}));
-
         $("#trainForm").append($("<button>").addClass("btn btn-primary").attr({id: "add-train-btn", type: "submit"}).html("Add Train Times"));
 
     }
 
-    $(document).on("click", "#add-train-btn", function () {
-        event.preventDefault();
-        popUpModal();
-        console.log("inside the click");
-        $("#trainModal").modal("show");
-        
-    });
-
-    $(document).on("click", "#add-train-btn-modal", function () {
-        event.preventDefault();
-        // console.log("inside the click");
-        getTrainInfo();
-        // $("#trainModal").modal("show");
-        
-    });
+    
 
 
     function popUpModal(){
@@ -136,7 +124,15 @@ $(document).ready(function () {
         $("#trainFormModal").append($("<div>").addClass("form-group").attr("id","formGroup3"));
         $("#formGroup3").append($("<label>").attr("for","firsttime-input").html("First Train Time (Military Format HH:MM)"));
         $("#trainFormModal").append($("<div>").addClass("form-group").attr("id","formGroup4"));
-        $("#formGroup4").append($("<input>").attr({id: "trainTime", type: "time", required: true}));
+
+        // $("#formGroup4").append($("<input>").addClass("form-group").attr({id: "firstHour1-input", type: "number", min: "0", max: "1", maxlength: "1", required: true}));
+        // $("#formGroup4").append($("<input>").addClass("form-group").attr({id: "firstHour2-input", type: "number", min: "0", max: "9", maxlength: "1", required: true}));
+        // $("#formGroup4").append($("<label>").html(":"));
+
+        // $("#formGroup4").append($("<input>").addClass("form-group").attr({id: "firstMin1-input", type: "number", min: "0", max: "5", maxlength: "1", required: true}));
+        // $("#formGroup4").append($("<input>").addClass("form-group").attr({id: "firstMin2-input", type: "number", min: "0", max: "9", maxlength: "1", required: true}));
+        
+        $("#formGroup4").append($("<input>").attr({id: "trainTime", type: "text", required: true, pattern: "([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}"}));
         
         $("#trainFormModal").append($("<div>").addClass("form-group").attr("id","formGroup5"));
         $("#formGroup5").append($("<label>").attr("for", "frequency-input").html("Frequency (min)"));
