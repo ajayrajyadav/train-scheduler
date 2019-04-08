@@ -25,8 +25,9 @@ $(document).ready(function () {
         var tFrequency = childSnap.val().trainFrequency;
         var tMin = childSnap.val().minutesUntilTrainArrives;
         var tNext = childSnap.val().TimeForNextTrain;
+        doTheMath(fstTrain, tFrequency);
 
-        $("#table-tbody").append("<tr><td>"+tName+"</td><td>"+tDestination+"</td><td>"+tFrequency+"</td><td>"+tNext+"</td><td>"+tMin+"</td></tr>");
+        $("#table-tbody").append("<tr><td>"+tName+"</td><td>"+tDestination+"</td><td>"+tFrequency+"</td><td>"+nextTrain+"</td><td>"+minUntilTrain+"</td></tr>");
 
     })
 
@@ -51,14 +52,35 @@ $(document).ready(function () {
 
     //get the user entered data
     function getTrainInfo(){
+        let dataIsGood = true;
         let newTrainInput = $("#train-name-input").val().trim();
         let theDestinationInput = $("#train-dest-input").val().trim();
         let firstTrainInput = $("#trainTime").val().trim();
         let frequencyInput = $("#frequency-input").val().trim();
-        if(newTrainInput ===  ""){ popupErrorModal("Train input is not valid"); }
-        if(theDestinationInput === ""){ popUpModal("Destination input is not valid"); }
-        if(firstTrainInput === ""){ popUpModal("Time is not valid"); }
-        if(frequencyInput === ""){ popUpModal("Time is not valid"); }
+        //validate data
+        if(newTrainInput ===  ""){ 
+            popupErrorModal("Train input is not valid"); 
+            dataIsGood = false;
+        }
+        if(theDestinationInput === "" && dataIsGood){ 
+            popupErrorModal("Destination input is not valid");
+            dataIsGood = false;
+        }
+        if(firstTrainInput !== "" && dataIsGood){ 
+            //check the format
+            if (firstTrainInput.length === 3){
+                //add leading 0
+                firstTrainInput = "0" + firstTrainInput;
+            }
+            if(!moment(firstTrainInput, "HH:mm").isValid())
+            {
+                popupErrorModal("Time format must be in military time");
+                dataIsGood = false;
+            }
+            // popupErrorModal("Time is not valid"); 
+            
+        } else {popupErrorModal("Time is not valid");} 
+        if(frequencyInput === ""){ popupErrorModal("Time is not valid"); }
         doTheMath(firstTrainInput, frequencyInput);
         var newTrain = {
             trainName: newTrainInput,
@@ -68,8 +90,8 @@ $(document).ready(function () {
             minutesUntilTrainArrives: minUntilTrain,
             TimeForNextTrain: nextTrain
         }
-        console.log(newTrain);
-        database.ref().push(newTrain);
+        if(dataIsGood){ database.ref().push(newTrain); }
+        
     }
 
     //helper function to calculate the math of times
@@ -79,7 +101,6 @@ $(document).ready(function () {
         var remainder = difference % frequencyInput;
         minUntilTrain = frequencyInput - remainder;
         nextTrain = moment().add(minUntilTrain, "minutes").format("HH:mm");
-        console.log(nextTrain);
     }
 
     //Starting to build html by adding a container to the body
